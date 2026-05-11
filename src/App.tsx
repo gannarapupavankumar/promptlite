@@ -11,7 +11,7 @@ const EXAMPLE_PROMPT =
   'Please rewrite the following product description so that it is clearer, shorter, and more persuasive while keeping a friendly tone.'
 
 const OLLAMA_URL = 'http://localhost:11434/api/generate'
-const OLLAMA_MODEL = 'qwen2.5:0.5b'
+const OLLAMA_MODEL = 'llama2:latest'
 
 function countTokens(text: string) {
   if (!text) {

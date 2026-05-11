@@ -44,7 +44,7 @@ PromptLite is an input optimizer, not a code editor. If the input is only code, 
 
 ```bash
 npm install
-ollama pull qwen2.5:0.5b
+ollama pull llama2
 ollama serve
 npm run dev
 ```
@@ -58,7 +58,7 @@ http://localhost:5173
 The default model is configured in [src/App.tsx](src/App.tsx):
 
 ```ts
-const OLLAMA_MODEL = 'qwen2.5:0.5b'
+const OLLAMA_MODEL = 'llama2:latest'
 ```
 
 ## Troubleshooting
@@ -76,7 +76,7 @@ ollama serve
 If Ollama returns a model-not-found error, pull the default model:
 
 ```bash
-ollama pull qwen2.5:0.5b
+ollama pull llama2
 ```
 
 You can see installed models with:
@@ -101,7 +101,7 @@ http://localhost:5173
 
 ### Slow Response Time
 
-Local model speed depends on your machine and the selected Ollama model. For faster responses, use a smaller model such as `qwen2.5:0.5b`.
+Local model speed depends on your machine and the selected Ollama model. For faster responses, use a smaller model supported by your local Ollama installation.
 
 ## Project Structure
 
@@ -138,7 +138,3 @@ promptlite/
 - Model selector
 - Prompt history
 - Better token counting for non-LLaMA tokenizers
-
-## License
-
-MIT License. See [LICENSE](LICENSE).
