@@ -1,73 +1,144 @@
-# React + TypeScript + Vite
+# PromptLite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+PromptLite is a privacy-first local prompt optimizer powered by Ollama.
 
-Currently, two official plugins are available:
+It compresses prompts on-device without cloud APIs, login, a backend server, or subscription cost. The app runs in your browser with React, then sends optimization requests to your locally running Ollama model.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- Local prompt optimization
+- Uses the Ollama local API
+- No API key required
+- No cloud processing
+- Code-preservation rules for code-only and instruction-plus-code prompts
+- Streaming optimized output
+- Copy optimized output
+- Token savings display with local tokenizer-based counting
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- React
+- TypeScript
+- Vite
+- Ollama
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## How It Works
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. The user enters a prompt.
+2. The app sends a local request to Ollama at `http://localhost:11434/api/generate`.
+3. Ollama returns an optimized prompt.
+4. The app streams and displays the optimized result.
+5. PromptLite shows original tokens, optimized tokens, saved tokens, and savings percentage.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+PromptLite is an input optimizer, not a code editor. If the input is only code, it returns the code unchanged. If the input contains instructions plus code, it compresses only the natural-language instruction and preserves the code exactly.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Setup
+
+### Requirements
+
+- Node.js
+- npm
+- Ollama
+
+### Install And Run
+
+```bash
+npm install
+ollama pull qwen2.5:0.5b
+ollama serve
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Then open:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+http://localhost:5173
 ```
+
+The default model is configured in [src/App.tsx](src/App.tsx):
+
+```ts
+const OLLAMA_MODEL = 'qwen2.5:0.5b'
+```
+
+## Troubleshooting
+
+### Ollama Not Running
+
+If optimization fails with a fetch or connection error, start Ollama:
+
+```bash
+ollama serve
+```
+
+### Model Missing
+
+If Ollama returns a model-not-found error, pull the default model:
+
+```bash
+ollama pull qwen2.5:0.5b
+```
+
+You can see installed models with:
+
+```bash
+ollama list
+```
+
+### Fetch Failed
+
+Make sure Ollama is reachable at:
+
+```text
+http://localhost:11434/api/generate
+```
+
+Also make sure the Vite app is running at:
+
+```text
+http://localhost:5173
+```
+
+### Slow Response Time
+
+Local model speed depends on your machine and the selected Ollama model. For faster responses, use a smaller model such as `qwen2.5:0.5b`.
+
+## Project Structure
+
+```text
+promptlite/
+├── public/
+│   ├── favicon.svg
+│   └── icons.svg
+├── src/
+│   ├── assets/
+│   │   ├── hero.png
+│   │   ├── react.svg
+│   │   └── vite.svg
+│   ├── App.css
+│   ├── App.tsx
+│   ├── index.css
+│   └── main.tsx
+├── .gitignore
+├── eslint.config.js
+├── index.html
+├── package-lock.json
+├── package.json
+├── README.md
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
+```
+
+## Future Improvements
+
+- Electron desktop app
+- Browser extension
+- Model selector
+- Prompt history
+- Better token counting for non-LLaMA tokenizers
+
+## License
+
+MIT License. See [LICENSE](LICENSE).
