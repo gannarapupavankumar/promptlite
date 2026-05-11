@@ -4,6 +4,8 @@ PromptLite is a privacy-first local prompt optimizer powered by Ollama.
 
 It compresses prompts on-device without cloud APIs, login, a backend server, or subscription cost. The app runs in your browser with React, then sends optimization requests to your locally running Ollama model.
 
+![PromptLite app screenshot](promptlite.png)
+
 ## Features
 
 - Local prompt optimization
